@@ -1,0 +1,28 @@
+﻿<div class="container jumbotron">
+    <form ng-submit="controller.addDeck()">
+        <div class=" form-group">
+            <label class="col-xs-2">Name: </label>
+            <input type="text" ng-model="controller.deck.name" />
+        </div>
+        <div class="dropdown form-group">
+            <label class="col-xs-2">Class: </label>
+            <select class="btn btn-primary dropdown-toggle col-xs-2" type="button" data-toggle="dropdown" ng-model="controller.deck.class" required>
+                Select Class
+                <option>Warrior</option>
+                <option>Hunter</option>
+                <option>Paladin</option>
+                <option>Druid</option>
+                <option>Shaman</option>
+                <option>Rogue</option>
+                <option>Mage</option>
+                <option>>Priest</option>
+                <option>Warlock</option>
+            </select>
+        </div>
+        <hr />
+        <div class="form-group">
+            <input class="btn btn-danger pull-right" type="submit" value="Create Deck" />
+        </div>
+    </form>
+</div>
+
