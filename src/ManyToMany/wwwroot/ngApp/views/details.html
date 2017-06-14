@@ -1,0 +1,43 @@
+﻿    <div class="jumbotron col-xs-5">
+        <h3><u><strong>Available Cards:</strong></u></h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody id='cardTable'>
+                <tr ng-repeat="card in controller.cards">
+                    <td>{{card.name}}</td>
+                    <td>{{card.class}}</td>
+                    <td>{{card.cost}}</td>
+                    <td><button class="btn btn-success" ng-click="controller.addDeckCard(card.id)">Add Card</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xs-2"></div>
+    <div class="jumbotron col-xs-5">
+        <h3><u><strong>Your Deck:</strong></u></h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Cost</th>
+            </tr>
+        </thead>
+        <tbody id='deckTable'>
+            <tr ng-repeat="card in controller.deckCards">
+                <td>{{card.name}}</td>
+                <td>{{card.class}}</td>
+                <td>{{card.cost}}</td>
+                <td><button class="btn btn-success" ng-click="controller.deleteDeckCard(deckResource.id)">Remove</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
