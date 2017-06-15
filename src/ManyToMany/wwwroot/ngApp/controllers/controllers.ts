@@ -55,34 +55,45 @@ namespace ManyToMany.Controllers {
         }
     }
 
+    // -------------------------------------- This one has issues. 
     export class DeckCardsController {
       //  public deckResource;
-        public deckCards;
-        public cards;
-        public card;
+        public deckWithCards;
+        public cardsWithDecks;
+       // public card;
+        
 
-        public addDeckCard(card: number) {
-           // return this.deckResource.save({ id: deckId }, card);
-            this.$http.post('/api/deckCards', this.card).then((response) => {
+        public addDeckCard(card) {
+
+            card.decks = this.deckWithCards;
+            console.log("Card id is " +card.id);
+            this.$http.post('/api/cards', card).then((response) => {
                 this.$state.reload();
             })
         }
 
         public deleteDeckCard(id: number) {
-            this.$http.delete(`/api/deckCards/` + id).then((response) => {
+            this.$http.delete(`/api/cards/` + id).then((response) => {
                 this.$state.reload();
             })
         }
 
-        constructor($resource: angular.resource.IResourceService, private $http: ng.IHttpService, private $state: ng.ui.IStateService) {
-            //this.deckResource = $resource('/api/decks/:id');
+        constructor($resource: angular.resource.IResourceService,
+            private $http: ng.IHttpService,
+            private $state: ng.ui.IStateService,
+            private $stateParams: ng.ui.IStateParamsService) { // --------- Injected $stateparams in order to get id.
+           
             this.$http.get('/api/cards').then((response) => {
-                this.cards = response.data;
-            })
-            this.$http.get('/api/deckCards/:id').then((response) => {
-                this.deckCards = response.data;
+                this.cardsWithDecks = response.data;
             })
 
+            let DeckId = $stateParams[`id`];  // ---------------------Gets deck id from URL
+            this.$http.get('/api/cards' + DeckId).then((response) => {
+                this.deckWithCards = response.data;
+            })
+            console.log("Deck id = " + DeckId);
+            console.log("Deck Contents " + this.deckWithCards);
+            console.log("Card Contents " + this.cardsWithDecks);
         }
     }
 

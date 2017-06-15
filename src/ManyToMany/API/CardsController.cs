@@ -22,27 +22,37 @@ namespace ManyToMany.API
         }
 
         [HttpGet]
-        public List<Card> Get()
+        public List<CardWithDecks> Get()
         {
-            return _db.Cards.ToList();
+
+            List<CardWithDecks> cards = (from c in _db.Cards
+                                         select new CardWithDecks
+                                         {
+                                             Id = c.Id,
+                                             Class = c.Class,
+                                             Cost = c.Cost,
+                                             Name = c.Name
+                                         }).ToList();
+
+
+            return cards;
         }
 
         [HttpGet("{id}")]
-        public CardWithDecks Get(int id)
+        public DeckWithCards Get(int id) // ------------ I switched from cards with deck.
         {
-            CardWithDecks card = (from c in _db.Cards
-                                     where c.Id == id
-                                     select new CardWithDecks
-                                     {
-                                         Id = c.Id,
-                                         Name = c.Name,
-                                         Class = c.Class,
-                                         Cost = c.Cost,
-                                         Decks = (from dc in _db.DeckCards
-                                                   where dc.CardId == id
-                                                   select dc.Deck).ToList()
-                                     }).FirstOrDefault();
-            return card;
+            DeckWithCards deck = (from c in _db.Decks
+                                  where c.Id == id
+                                  select new DeckWithCards
+                                  {
+                                      Id = c.Id,
+                                      Name = c.Name,
+                                      Class = c.Class,
+                                      Cards = (from cd in _db.DeckCards
+                                               where cd.CardId == id
+                                               select cd.Card).ToList()
+                                  }).FirstOrDefault();
+            return deck;
         }
 
         [HttpPost]
@@ -57,13 +67,38 @@ namespace ManyToMany.API
                 Card tempCard = new Card
                 {
                     Name = card.Name,
-                    Class = card.Class,
-                    Cost = card.Cost,
+                    Class = card.Class
                 };
                 _db.Cards.Add(tempCard);
                 _db.SaveChanges();
 
+                foreach (Deck d in card.Decks)
+                {
+                    _db.DeckCards.Add(new DeckCard
+                    {
+                        CardId = tempCard.Id,
+                        DeckId = d.Id
+                    });
+                    _db.SaveChanges();
+                }
+
                 return Ok();
+
+            }
+            else if (card.Id !=0)
+            {
+                foreach (Deck d in card.Decks)
+                {
+                    _db.DeckCards.Add(new DeckCard
+                    {
+                        CardId = card.Id,
+                        DeckId = d.Id
+                    });
+                    _db.SaveChanges();
+                }
+
+                return Ok();
+
 
             }
             else

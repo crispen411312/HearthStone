@@ -9,11 +9,11 @@
                 </tr>
             </thead>
             <tbody id='cardTable'>
-                <tr ng-repeat="card in controller.cards">
+                <tr ng-repeat="card in controller.cardsWithDecks">
                     <td>{{card.name}}</td>
                     <td>{{card.class}}</td>
                     <td>{{card.cost}}</td>
-                    <td><button class="btn btn-success" ng-click="controller.addDeckCard(card.id)">Add Card</button></td>
+                    <td><button class="btn btn-success" ng-click="controller.addDeckCard(card)">Add Card</button></td>
                 </tr>
             </tbody>
         </table>
@@ -30,10 +30,10 @@
             </tr>
         </thead>
         <tbody id='deckTable'>
-            <tr ng-repeat="card in controller.deckCards">
-                <td>{{card.name}}</td>
-                <td>{{card.class}}</td>
-                <td>{{card.cost}}</td>
+            <tr ng-repeat="dc in controller.deckWithCards">
+                <td>{{dc.name}}</td>
+                <td>{{dc.class}}</td>
+                <td>{{dc.cost}}</td>
                 <td><button class="btn btn-success" ng-click="controller.deleteDeckCard(deckResource.id)">Remove</button></td>
             </tr>
         </tbody>
